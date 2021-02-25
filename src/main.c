@@ -45,8 +45,9 @@
 long frequency = 72000000;
 int time = 0;
 float signal = 0.05;
-float sequence[] = {1,1,1,1,1,1,0.03,0}; // anal //2.3
-float sequence2[] = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.03,0}; // anal2
+//float sequence[] = {1,1,1,1,1,1,0.05,0}; // anal //2.3
+float sequence[] = {2,2,2,2,2,2,0.05,0}; // anal //2.3
+float sequence2[] = {1.414,1.414,1.414,1.414,1.414,1.414,0.05,0}; // anal2  //sqrt(2)
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,7 +58,7 @@ static void MX_GPIO_Init(void);
 /* USER CODE END PFP */
 void delay(float sec)
 {
-	for(uint32_t i = 0; i < sec*90000*200/13; i++)
+	for(float i = 0; i < sec*10000000./19.; i++)
 	{
 		__NOP();
 		__NOP();
@@ -81,7 +82,7 @@ void Ratata2(float seq[])
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
 			delay(signal);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
-			delay(seq[i] * 75./60. - signal);
+			delay(seq[i] - signal);
 		}
   __NVIC_SystemReset();
 }
