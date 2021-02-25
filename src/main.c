@@ -44,9 +44,9 @@
 /* USER CODE BEGIN PV */
 long frequency = 72000000;
 int time = 0;
-float signal = 0.1;
-float sequence[] = {1,2,3,3,2,1,0.1,0}; // anal 
-float sequence2[] = {5,5,2,2,2,10,10,0.1,0}; // anal2
+float signal = 0.05;
+float sequence[] = {1,1,1,1,1,1,0.03,0}; // anal //2.3
+float sequence2[] = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.03,0}; // anal2
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,28 +64,6 @@ void delay(float sec)
 	}
 }     
 
-
-/******************DWT_START*********************/
-/*#define    DWT_CYCCNT    *(volatile unsigned long *)0xE0001004
-#define    DWT_CONTROL   *(volatile unsigned long *)0xE0001000
-#define    SCB_DEMCR     *(volatile unsigned long *)0xE000EDFC
-
-void DWT_delay (uint32_t us)
-{
-  int32_t us_count_tick =  us * (SystemCoreClock/1000);
-				//	разрешаем использовать счётчик
-  SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-        //	обнуляем значение счётного регистра
-  DWT_CYCCNT  = 0;
-        //	запускаем счётчик
-  DWT_CONTROL |= DWT_CTRL_CYCCNTENA_Msk; 
-  while(DWT_CYCCNT < us_count_tick);
-        //	останавливаем счётчик
-  DWT_CONTROL &= ~DWT_CTRL_CYCCNTENA_Msk; 
-}
-*/
-
-
 void Ratata(float seq[])
 {
 		for (int i = 0; seq[i] != 0; i++){
@@ -93,8 +71,10 @@ void Ratata(float seq[])
 			delay(signal);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
 			delay(seq[i]-signal);
-		}
+	  }
+    __NVIC_SystemReset();
 }
+
 void Ratata2(float seq[])
 {
 		for (int i = 0; seq[i] != 0; i++){
@@ -103,6 +83,7 @@ void Ratata2(float seq[])
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
 			delay(seq[i] * 75./60. - signal);
 		}
+  __NVIC_SystemReset();
 }
 
 /* Private user code ---------------------------------------------------------*/
@@ -151,13 +132,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_SET);
-		delay(200);
+		HAL_Delay(200);
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_RESET);
-		delay(200);
+		HAL_Delay(200);
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET);
-		delay(200);
+		HAL_Delay(200);
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_RESET);
-		delay(200);
+		HAL_Delay(200);
 	}
   /* USER CODE END 3 */
 }
@@ -260,7 +241,6 @@ static void MX_GPIO_Init(void)
 			 Ratata(sequence2);
 			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
 			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-			 HAL_SystemReset();
 		 }
 	else if(GPIO_Pin == GPIO_PIN_6 & HAL_GetTick()-time > 500 )  //Left_Button 75bpm
 		 {
@@ -270,12 +250,11 @@ static void MX_GPIO_Init(void)
 			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
 			 Ratata2(sequence); 
 			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
-			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-			 HAL_SystemReset();
+			 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);	 
 		 }
-	else{
+/*	else{
 		__NOP();
-			}
+			}*/
 }
 /* USER CODE END 4 */
 
