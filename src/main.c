@@ -57,7 +57,7 @@ static void MX_GPIO_Init(void);
 /* USER CODE END PFP */
 void delay(float sec)
 {
-	for(uint32_t i = 0; i < sec*90000*200/13; i++)
+	for(float i = 0; i < sec*90000*200/13*1.52; i++)
 	{
 		__NOP();
 		__NOP();
