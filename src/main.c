@@ -67,7 +67,7 @@ void delay(float sec)
 
 void Ratata(float seq[])
 {
-  for (int i = 0; i < 4; i++)
+  for (int j = 0; j < 4; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
@@ -82,7 +82,7 @@ void Ratata(float seq[])
 
 void Ratata2(float seq[])
 {
-  for (int i = 0; i < 4; i++)
+  for (int j = 0; j < 4; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
