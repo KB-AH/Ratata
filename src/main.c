@@ -46,8 +46,8 @@ long frequency = 72000000;
 int time = 0;
 float signal = 0.05;
 float sequence[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.05, 0}; // anal //2.3
-float sequence3[] = {1.414, 1.414, 1.414, 1.414, 1.414, 1.414, 0.05, 0};   // anal2  //sqrt(2)
-float sequence2[] = {1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 0.05, 0};
+float sequence2[] = {1.414, 1.414, 1.414, 1.414, 1.414, 1.414, 0.05, 0};   // anal2  //sqrt(2)
+//float sequence2[] = {1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 0.05, 0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +67,7 @@ void delay(float sec)
 
 void Ratata(float seq[])
 {
-  for (int j = 0; j < 4; j++)
+  for (int j = 0; j < 5; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
@@ -82,7 +82,7 @@ void Ratata(float seq[])
 
 void Ratata2(float seq[])
 {
-  for (int j = 0; j < 4; j++)
+  for (int j = 0; j < 5; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
@@ -186,7 +186,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  if (GPIO_Pin == GPIO_PIN_7 & HAL_GetTick() - time > 500) //Right_Button
+  if (GPIO_Pin == GPIO_PIN_7 & HAL_GetTick() - time > 500) //Right_Button 42bpm
   {
     time = HAL_GetTick();
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
@@ -196,7 +196,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
   }
-  else if (GPIO_Pin == GPIO_PIN_6 & HAL_GetTick() - time > 500) //Left_Button 75bpm
+  else if (GPIO_Pin == GPIO_PIN_6 & HAL_GetTick() - time > 500) //Left_Button 60bpm
   {
     time = HAL_GetTick();
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
