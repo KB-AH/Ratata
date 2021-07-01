@@ -45,9 +45,9 @@
 long frequency = 72000000;
 int time = 0;
 float signal = 0.05;
-//float sequence[] = {1,1,1,1,1,1,0.05,0}; // anal //2.3
-float sequence[] = {2,2,2,2,2,2,0.05,0}; // anal //2.3
-float sequence2[] = {1.414,1.414,1.414,1.414,1.414,1.414,0.05,0}; // anal2  //sqrt(2)
+//float sequence[] = {1,1,1,1,1,1,1,1,0.05,0}; // anal //2.3
+float sequence[] = {2,2,2,2,2,2,2,2,0.05,0}; // anal //2.3
+float sequence2[] = {1.414,1.414,1.414,1.414,1.414,1.414,1.414,1.414,0.05,0}; // anal2  //sqrt(2)
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
