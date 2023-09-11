@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -44,10 +44,58 @@
 /* USER CODE BEGIN PV */
 long frequency = 72000000;
 int time = 0;
+
+uint32_t repeats = 1;
 float signal = 0.05;
-float sequence[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.05, 0}; 
-float sequence3[] = {1.414, 1.414, 1.414, 1.414, 1.414, 1.414, 0.05, 0};  
-float sequence2[] = {1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 1.621, 0.05, 0};
+float sequence[] = {2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0.05,
+                    0};
+float sequence2[] = {1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     1.621,
+                     0.05,
+                     0};
+
+float sequence3[] = {2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     2.828,
+                     0.05,
+                     0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,13 +115,15 @@ void delay(float sec)
 
 void Ratata(float seq[])
 {
-  for (int j = 0; j < 4; j++)
+  for (int j = 0; j < repeats; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
       delay(signal);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
       delay(seq[i] - signal);
     }
   }
@@ -82,13 +132,15 @@ void Ratata(float seq[])
 
 void Ratata2(float seq[])
 {
-  for (int j = 0; j < 4; j++)
+  for (int j = 0; j < repeats; j++)
   {
     for (int i = 0; seq[i] != 0; i++)
     {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
       delay(signal);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
       delay(seq[i] - signal);
     }
   }
@@ -106,13 +158,13 @@ int main(void)
   while (1)
   {
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-    HAL_Delay(200);
+    HAL_Delay(400);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-    HAL_Delay(200);
+    HAL_Delay(400);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-    HAL_Delay(200);
+    HAL_Delay(400);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-    HAL_Delay(200);
+    HAL_Delay(400);
   }
 }
 
@@ -133,7 +185,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   /** Initializes the CPU, AHB and APB buses clocks
-  */
+   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
@@ -186,17 +238,17 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  if (GPIO_Pin == GPIO_PIN_7 & HAL_GetTick() - time > 500) //Right_Button
+  if ((GPIO_Pin == GPIO_PIN_7) && (HAL_GetTick() - time > 500)) // Right_Button
   {
     time = HAL_GetTick();
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
-    Ratata(sequence2);
+    Ratata(sequence3);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
   }
-  else if (GPIO_Pin == GPIO_PIN_6 & HAL_GetTick() - time > 500) //Left_Button 75bpm
+  else if ((GPIO_Pin == GPIO_PIN_6) && (HAL_GetTick() - time > 500)) // Left_Button 75bpm
   {
     time = HAL_GetTick();
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
@@ -210,9 +262,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -223,12 +275,12 @@ void Error_Handler(void)
 
 #ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
